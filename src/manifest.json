@@ -1,0 +1,37 @@
+{
+    "manifest_version": 3,
+    "name": "Block Party Extension",
+    "version": "1.0",
+    "content_scripts": [
+        {
+            "matches": ["https://www.tiktok.com/*"],
+            "js": ["blockUser.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "permissions": [
+      "storage",
+      "tabs",
+      "scripting"
+    ],
+    "host_permissions": [
+      "https://www.tiktok.com/*"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "web_accessible_resources": [
+      {
+        "resources": ["userList.json"],
+        "matches": ["<all_urls>"]
+      }
+    ],
+    "action": {
+      "default_popup": "options.html",
+      "default_icon": "icon.png"
+    },
+    "icons": {
+      "48": "icon.png"
+    }
+  }
+  
