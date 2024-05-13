@@ -3,33 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Block Usernames</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin: 8px 0;
-        }
-        button {
-            margin-left: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <-- TODO: Overhaul this. on the main page the user should see a button to block all users on their current site and a list of their user packages with a button next to them to delete the user package. Clicking the user package should display the packages user list -->
-    <h1>Manage Blocked Usernames</h1>
-    <input type="text" id="usernameInput" placeholder="Add username to block">
-    <button onclick="addUsername()">Add</button>
-    <button id="blockUsersButton">Block Users</button>
-
-    <h2>Blocked Usernames</h2>
-    <ul id="usernameList"></ul>
-
+    <div id="mainPage">
+        <h1 id="currentSite">Loading...</h1>
+        <button id="blockUsersButton">Block All Users on This Site</button>
+        <button id="importButton">Import User Package</button>
+        <button id="createPackageButton">Create New User Package</button>
+        <h2>User Packages</h2>
+        <ul id="packagesList"></ul>
+    </div>    
+    <div id="packageDetails" style="display:none;">
+        <button id="backButton">Back</button>
+        <button id="saveButton">Save</button>
+        <button id="exportButton">Export</button>
+        <h2>Package Details</h2>
+        <input type="text" id="packageName" placeholder="Package Name">
+        <input type="text" id="packageSite" placeholder="Site URL">
+        <input type="text" id="userInput" placeholder="Add username">
+        <button id="addUserButton">Add</button>
+        <ul id="userList"></ul>
+    </div>
     <script src="options.js"></script>
 </body>
 </html>
