@@ -1,24 +1,37 @@
 .wrapper {
     font-family: Arial, sans-serif;
     margin: 20px;
-    min-width: 400px; /* Adjust as needed */
-    max-width: 600px; /* This is typically the max Chrome allows */
+    min-width: 400px;
+    max-width: 600px;
+}
+
+.upload-wrapper {
+    font-family: Arial, sans-serif;
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%, -33%); 
+    width: auto; 
+    padding: 20px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    background: #fff; 
+    border-radius: 8px; 
 }
 
 h1, h2 {
-    color: #333; /* Dark grey color for text */
+    color: #333; 
 }
 
 #mainHeader, #currentSite {
-    text-transform: capitalize; /* Capitalize headers */
+    text-transform: capitalize; 
 }
 
 button:hover {
-    background-color: #0056a3; /* Darker shade for hover */
+    background-color: #0056a3; 
 }
 
 button {
-    background-color: #0078D7; /* Blue background for buttons */
+    background-color: #0078D7; 
     color: white;
     border: none;
     padding: 10px;
@@ -27,15 +40,15 @@ button {
     font-size: 14px;
     display: flex;
     align-items: center;
-    gap: 10px; /* Space between the icon and text */
+    gap: 10px; 
 }
 
 .button-container {
     display: flex;
-    justify-content: space-between; /* This will push the h2 and button to opposite ends */
-    align-items: center; /* Aligns items vertically in the center */
-    width: 100%; /* Ensures the container spans the full width of its parent */
-    padding: 0; /* Removes any default padding */
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%; 
+    padding: 0; 
 }
 .button-group {
     display: flex;
@@ -45,8 +58,8 @@ button {
 .flush-input input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    box-shadow: none; /* Removes the default focus shadow */
-    margin: 0; /* Removes default margin */
+    box-shadow: none; 
+    margin: 0; 
 }
 
 .flush-button {
@@ -55,67 +68,67 @@ button {
     margin-top: 5px;
 }
 
-.input-button-group { /* New class for the input and adjacent button */
+.input-button-group { 
     display: flex;
     align-items: center;
-    gap: 0; /* No space between input and button */
+    gap: 0; 
 }
 
 .input-button-group button:hover {
-    background-color: #0056a3; /* Darker shade on hover */
+    background-color: #0056a3; 
 }
 
 .input-button-group input,
 .input-button-group button {
-    flex-grow: 1; /* Allows input and button to expand to fill the container */
+    flex-grow: 1; 
 }
 
 .input-button-group input {
-    flex-grow: 1; /* Input grows to take available space */
-    margin: 0; /* Remove default margins */
-    border-radius: 5px 0 0 5px; /* Rounded corners only on the left side */
-    border: 1px solid #ccc; /* Consistent border styling */
-    border-right: none; /* Remove border between input and button */
+    flex-grow: 1; 
+    margin: 0; 
+    border-radius: 5px 0 0 5px; 
+    border: 1px solid #ccc; 
+    border-right: none; 
 }
 
 .input-button-group button {
-    padding: 10px 12px; /* Adjust padding to match input height */
-    border-radius: 0 5px 5px 0; /* Rounded corners only on the right side */
-    border: 1px solid #ccc; /* Consistent border styling */
-    border-left: none; /* Remove border between button and input */
-    background-color: #0078D7; /* Background color for the button */
-    color: white; /* Text color for the button */
-    font-size: 14px; /* Font size for consistency */
-    cursor: pointer; /* Cursor indicates button */
+    padding: 10px 12px; 
+    border-radius: 0 5px 5px 0; 
+    border: 1px solid #ccc; 
+    border-left: none; 
+    background-color: #0078D7; 
+    color: white; 
+    font-size: 14px; 
+    cursor: pointer; 
 }
 
 .image-button.span {
     display: flex;
-    align-items: center; /* Aligns items vertically in the center */
-    justify-content: space-between; /* Spreads out the text and the image */
-    text-align: center; /* Centers text within the space it occupies */
-    width: 100%; /* Full width of its parent container */
-    padding: 10px; /* Padding for aesthetic spacing inside the button */
-    position: relative; /* Allows absolute positioning of elements inside */
+    align-items: center; 
+    justify-content: space-between; 
+    text-align: center; 
+    width: 100%; 
+    padding: 10px; 
+    position: relative; 
 }
 
 .image-button.inline {
-    padding: 5px; /* Reduced padding for a more compact button */
-    margin: 0; /* Removes any default margin */
-    height: 30px; /* Smaller height for a compact look */
-    width: 30px; /* Smaller width to match the height */
+    padding: 5px; 
+    margin: 0; 
+    height: 30px; 
+    width: 30px; 
 }
 
 .image-button img {
-    width: 20px; /* Set image width */
-    height: auto; /* Maintain aspect ratio */
+    width: 20px; 
+    height: auto; 
 }
 
 .image-button.span img {
-    position: absolute; /* Absolutely positions the image */
-    right: 5px; /* Distance from the right edge */
-    height: auto; /* Maintains aspect ratio */
-    width: 20px; /* Fixed width for the image */
+    position: absolute; 
+    right: 5px; 
+    height: auto; 
+    width: 20px; 
 }
 
 .delete-button {
@@ -138,7 +151,7 @@ ul {
 }
 
 li {
-    background-color: #f0f0f0; /* Light grey background for list items */
+    background-color: #f0f0f0; 
     padding: 10px;
     border-radius: 5px;
     display: flex;
@@ -149,11 +162,11 @@ li {
 }
 
 li:hover {
-    background-color: #e0e0e0; /* Slightly darker shade on hover */
+    background-color: #e0e0e0; 
 }
 
 input[type="text"] {
-    width: calc(100% - 22px); /* Full width input fields */
+    width: calc(100% - 22px); 
     padding: 10px;
     margin-top: 5px;
     border-radius: 5px;
