@@ -167,7 +167,7 @@ function deletePackage(packageName) {
 document.getElementById('blockUsersButton').addEventListener('click', function() {
     chrome.tabs.query({active: true, currentWindow: true}, tabs => {
         const url = new URL(tabs[0].url);
-        const hostname = url.hostname;
+        const hostname = url.hostname.replace(/^www\./, '');
 
         chrome.storage.local.get({ userPackages: [] }, ({ userPackages }) => {
             const firstRelevantPackage = userPackages.find(pkg => pkg.site === hostname && pkg.users.some(user => user.status === 'not blocked'));
