@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'BLOCK_USER') {
-        blockUser(message.username).then(() => {
+        openEllipsesMenuAndBlock().then(() => {
             console.log('Blocking process completed');
             sendResponse({status: 'completed'});
         }).catch(error => {
@@ -10,11 +10,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true; // Keeps the message channel open for the response
     }
 });
-
-function blockUser(username) {
-    // No need to navigate as each tab will be for a specific user
-    return openEllipsesMenuAndBlock();
-}
 
 function simulateMouseEvent(element, eventType) {
     const mouseEvent = new MouseEvent(eventType, {
@@ -74,7 +69,7 @@ function openEllipsesMenuAndBlock() {
                     reject('Could not find confirmation button')
                 }
             } else {
-                // Assuming the presence of an "Unblock" button means the user is already blocked
+                // The presence of an "Unblock" button means the user is already blocked
                 const unblockButton = await waitForElementWithTimeout('div[aria-label="Unblock"]', 2000);
                 if (unblockButton) {
                     console.log('User is already blocked.');

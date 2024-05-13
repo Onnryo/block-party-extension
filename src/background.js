@@ -1,17 +1,19 @@
-chrome.runtime.onInstalled.addListener(() => {
+// Listeners for Chrome Runtime Events
+chrome.runtime.onInstalled.addListener(initializeDefaultUserPackage);
+chrome.runtime.onMessage.addListener(handleMessage);
+
+// Initialization Functions
+function initializeDefaultUserPackage() {
     fetch(chrome.runtime.getURL('userList.json'))
         .then(response => response.json())
         .then(data => {
-            // Initialize storage with a default user package
             chrome.storage.local.get({ userPackages: [] }, function (result) {
                 const packages = result.userPackages;
                 const defaultPackage = {
                     name: data.name,
                     site: data.site,
-                    //users: data.users,
                     users: data.users.map(user => ({ username: user, status: 'not blocked' }))
                 };
-                // Avoid duplicating if it already exists
                 if (!packages.some(pkg => pkg.name === defaultPackage.name)) {
                     packages.push(defaultPackage);
                     chrome.storage.local.set({ userPackages: packages });
@@ -19,18 +21,18 @@ chrome.runtime.onInstalled.addListener(() => {
             });
         })
         .catch(error => console.error('Failed to load default user package:', error));
-});
+}
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+function handleMessage(message, sender, sendResponse) {
     if (message.action === "startBlocking" && message.packageData) {
         blockUsersSequentially(message.packageData);
     }
-});
+}
 
+// Core Functionality
 function blockUsersSequentially(packageData) {
     const userToBlock = packageData.users.find(user => user.status === 'not blocked');
     if (!userToBlock) {
-        // No more users to block in this package, check if there are more packages to process
         triggerNextPackageBlocking(packageData.site);
         return;
     }
@@ -40,7 +42,7 @@ function blockUsersSequentially(packageData) {
             chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
                 if (tabId === tab.id && changeInfo.status === 'complete') {
                     chrome.tabs.sendMessage(tab.id, { type: 'BLOCK_USER', username: userToBlock.username }, response => {
-                        chrome.tabs.remove(tab.id); // Close the tab
+                        chrome.tabs.remove(tab.id);
                         if (response.status === 'completed') {
                             userToBlock.status = 'blocked';
                             resolve();
@@ -54,11 +56,11 @@ function blockUsersSequentially(packageData) {
             });
         });
     }).then(() => {
-        saveCurrentPackageState(packageData); // Save after successful block
-        blockUsersSequentially(packageData); // Continue processing
+        saveCurrentPackageState(packageData);
+        blockUsersSequentially(packageData);
     }).catch(() => {
-        saveCurrentPackageState(packageData); // Save after failed block
-        blockUsersSequentially(packageData); // Continue processing
+        saveCurrentPackageState(packageData);
+        blockUsersSequentially(packageData);
     });
 }
 
