@@ -70,32 +70,51 @@ function showPackageDetails(pkg) {
 function updateUserList() {
     const userListElement = document.getElementById('userList');
     userListElement.innerHTML = '';
-    // Style each list element to remove the default bullet points
-    // ensure the username and delete button are side by side
+
     currentPackage.users.forEach(user => {
         const userEntry = document.createElement('li');
-        userEntry.textContent = user.username;
+
+        // Create an anchor tag to make the username clickable
+        const userLink = document.createElement('a');
+        userLink.href = `https://www.tiktok.com/@${user.username}`;
+        userLink.textContent = user.username;
+        userLink.target = "_blank"; // Open link in new tab
+        userLink.style.textDecoration = 'none'; // Optional: Remove underline from links
+        userLink.style.color = 'inherit'; // Optional: Use inherited text color
+
+        // Append username link to the list item
+        userEntry.appendChild(userLink);
+
+        // Status label to display user's status
         const statusLabel = document.createElement('span');
         statusLabel.textContent = ` (${user.status})`;
         userEntry.appendChild(statusLabel);
 
+        // Delete button setup
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-button';
-        deleteButton.style.backgroundImage = 'url("icons/delete.png")'; // Set background image
-        deleteButton.style.backgroundRepeat = 'no-repeat'; // Prevent the image from repeating
-        deleteButton.style.backgroundPosition = 'center'; // Center the image in the button
-        deleteButton.style.backgroundSize = 'cover'; // Ensure the image covers the button area
-        deleteButton.style.width = '20px'; // Set width of the button
-        deleteButton.style.height = '20px'; // Set height of the but
-        deleteButton.style.padding = '5px'; // Remove padding
-        deleteButton.onclick = () => {
+        deleteButton.style.backgroundImage = 'url("icons/delete.png")';
+        deleteButton.style.backgroundRepeat = 'no-repeat';
+        deleteButton.style.backgroundPosition = 'center';
+        deleteButton.style.backgroundSize = 'cover';
+        deleteButton.style.width = '20px';
+        deleteButton.style.height = '20px';
+        deleteButton.style.padding = '5px';
+        deleteButton.style.border = 'none';  // Optionally remove border for cleaner appearance
+        deleteButton.onclick = (event) => {
+            event.preventDefault(); // Prevent the link from being followed
             currentPackage.users = currentPackage.users.filter(u => u !== user);
             updateUserList();
         };
+
+        // Append the delete button to the list item
         userEntry.appendChild(deleteButton);
+
+        // Append the list item to the list
         userListElement.appendChild(userEntry);
     });
 }
+
 
 function addUser() {
     const userInput = document.getElementById('userInput');
