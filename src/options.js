@@ -5,7 +5,9 @@ let validHostNames = ['www.tiktok.com', 'www.instagram.com', 'www.facebook.com',
 chrome.tabs.query({active: true, currentWindow: true}, tabs => {
     const url = new URL(tabs[0].url);
     currentHostname = url.hostname;
-    document.getElementById('currentSite').textContent = `Block users on ${currentHostname}`;
+    const domain = new URL(tabs[0].url).hostname;
+    document.getElementById('currentSite').textContent = domain.charAt(0).toUpperCase() + domain.slice(1);
+
 
     const blockButton = document.getElementById('blockUsersButton');
     if (validHostNames.includes(currentHostname)) {
@@ -23,12 +25,21 @@ function loadPackages() {
         const listElement = document.getElementById('packagesList');
         listElement.innerHTML = ''; // Clear the current list completely
 
+        // Style each list element to remove the default bullet points
+        // ensure the package name and delete button are side by side
         packages.forEach(function(pkg) {
             const entry = document.createElement('li');
             entry.textContent = pkg.name;
             entry.onclick = () => showPackageDetails(pkg);
             const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-button';
+            deleteButton.style.backgroundImage = 'url("icons/delete.png")'; // Set background image
+            deleteButton.style.backgroundRepeat = 'no-repeat'; // Prevent the image from repeating
+            deleteButton.style.backgroundPosition = 'center'; // Center the image in the button
+            deleteButton.style.backgroundSize = 'cover'; // Ensure the image covers the button area
+            deleteButton.style.width = '20px'; // Set width of the button
+            deleteButton.style.height = '20px'; // Set height of the but
+            deleteButton.style.padding = '5px'; // Remove padding
             deleteButton.onclick = function(event) {
                 event.stopPropagation();
                 deletePackage(pkg.name);
@@ -59,6 +70,8 @@ function showPackageDetails(pkg) {
 function updateUserList() {
     const userListElement = document.getElementById('userList');
     userListElement.innerHTML = '';
+    // Style each list element to remove the default bullet points
+    // ensure the username and delete button are side by side
     currentPackage.users.forEach(user => {
         const userEntry = document.createElement('li');
         userEntry.textContent = user.username;
@@ -67,7 +80,14 @@ function updateUserList() {
         userEntry.appendChild(statusLabel);
 
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'delete-button';
+        deleteButton.style.backgroundImage = 'url("icons/delete.png")'; // Set background image
+        deleteButton.style.backgroundRepeat = 'no-repeat'; // Prevent the image from repeating
+        deleteButton.style.backgroundPosition = 'center'; // Center the image in the button
+        deleteButton.style.backgroundSize = 'cover'; // Ensure the image covers the button area
+        deleteButton.style.width = '20px'; // Set width of the button
+        deleteButton.style.height = '20px'; // Set height of the but
+        deleteButton.style.padding = '5px'; // Remove padding
         deleteButton.onclick = () => {
             currentPackage.users = currentPackage.users.filter(u => u !== user);
             updateUserList();
@@ -80,9 +100,9 @@ function updateUserList() {
 function addUser() {
     const userInput = document.getElementById('userInput');
     const newUser = userInput.value.trim();
-    if (newUser && !currentPackage.users.includes(newUser)) {
-        currentPackage.users.push({username: newUser, status: 'not blocked'});
-        updateUserList();
+    if (newUser && !currentPackage.users.some(user => user.username === newUser)) { // Ensure the user is not already in the list
+        currentPackage.users.unshift({username: newUser, status: 'not blocked'}); // Add to the start of the list
+        updateUserList(); // Update the UI to reflect the new user list
         userInput.value = '';  // Clear the input after adding
     }
 }
@@ -180,8 +200,8 @@ document.getElementById('importButton').addEventListener('click', function() {
     chrome.windows.create({
         url: chrome.runtime.getURL("upload.html"),
         type: "popup",
-        width: 400,
-        height: 400
+        width: 800,
+        height: 500
     });
 });
 

@@ -6,24 +6,53 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="mainPage">
-        <h1 id="currentSite">Loading...</h1>
-        <button id="blockUsersButton">Block All Users on This Site</button>
-        <button id="importButton">Import User Package</button>
-        <button id="createPackageButton">Create New User Package</button>
-        <h2>User Packages</h2>
-        <ul id="packagesList"></ul>
-    </div>    
-    <div id="packageDetails" style="display:none;">
-        <button id="backButton">Back</button>
-        <button id="saveButton">Save</button>
-        <button id="exportButton">Export</button>
-        <h2>Package Details</h2>
-        <input type="text" id="packageName" placeholder="Package Name">
-        <input type="text" id="packageSite" placeholder="Site URL">
-        <input type="text" id="userInput" placeholder="Add username">
-        <button id="addUserButton">Add</button>
-        <ul id="userList"></ul>
+    <div class="wrapper">
+        <div id="mainPage">
+            <h1 id="mainHeader">Block users on:</h1>
+            <h2 id="currentSite">Loading...</h2>
+            <button id="blockUsersButton">Start Blocking...</button>
+            <div class="button-container">
+                <h2>Active Blocklists:</h2>
+                <button id="importButton" class="image-button inline">
+                    <img src="icons/import.png" alt="Import">
+                </button>
+            </div>
+            <button id="createPackageButton" class="image-button span">
+                New Blocklist
+                <img src="icons/new.png" alt="Create New">
+            </button>
+            <ul id="packagesList"></ul>
+        </div>    
+        <div id="packageDetails" style="display:none;">
+            <div class="button-container">
+                <button id="backButton" class="image-button">
+                    <img src="icons/back.png" alt="Back">
+                    Back
+                </button>
+                <div class="button-group">
+                    <button id="saveButton" class="image-button">
+                        Save
+                        <img src="icons/save.png" alt="Save">
+                    </button>
+                    <button id="exportButton" class="image-button">
+                        Export
+                        <img src="icons/export.png" alt="Export">
+                    </button>
+                </div>
+            </div>
+            <h1 id="detailsHeader">Blocklist Details:</h1>
+            <input type="text" id="packageName" placeholder="Package Name">
+            <input type="text" id="packageSite" placeholder="Site URL">
+            <h2>Users:</h2>
+            <div class="input-button-group">
+                <input type="text" id="userInput" class="flush-input" placeholder="Add username">
+                <button id="addUserButton" class="image-button flush-button">
+                    <img src="icons/add.png" alt="Add">
+                </button>
+            </div>            
+            <ul id="userList"></ul>
+        </div>
+        
     </div>
     <script src="options.js"></script>
 </body>

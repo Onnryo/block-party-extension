@@ -1,0 +1,161 @@
+.wrapper {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    min-width: 400px; /* Adjust as needed */
+    max-width: 600px; /* This is typically the max Chrome allows */
+}
+
+h1, h2 {
+    color: #333; /* Dark grey color for text */
+}
+
+#mainHeader, #currentSite {
+    text-transform: capitalize; /* Capitalize headers */
+}
+
+button:hover {
+    background-color: #0056a3; /* Darker shade for hover */
+}
+
+button {
+    background-color: #0078D7; /* Blue background for buttons */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the icon and text */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* This will push the h2 and button to opposite ends */
+    align-items: center; /* Aligns items vertically in the center */
+    width: 100%; /* Ensures the container spans the full width of its parent */
+    padding: 0; /* Removes any default padding */
+}
+.button-group {
+    display: flex;
+    gap: 5px;
+}
+
+.flush-input input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: none; /* Removes the default focus shadow */
+    margin: 0; /* Removes default margin */
+}
+
+.flush-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 5px;
+}
+
+.input-button-group { /* New class for the input and adjacent button */
+    display: flex;
+    align-items: center;
+    gap: 0; /* No space between input and button */
+}
+
+.input-button-group button:hover {
+    background-color: #0056a3; /* Darker shade on hover */
+}
+
+.input-button-group input,
+.input-button-group button {
+    flex-grow: 1; /* Allows input and button to expand to fill the container */
+}
+
+.input-button-group input {
+    flex-grow: 1; /* Input grows to take available space */
+    margin: 0; /* Remove default margins */
+    border-radius: 5px 0 0 5px; /* Rounded corners only on the left side */
+    border: 1px solid #ccc; /* Consistent border styling */
+    border-right: none; /* Remove border between input and button */
+}
+
+.input-button-group button {
+    padding: 10px 12px; /* Adjust padding to match input height */
+    border-radius: 0 5px 5px 0; /* Rounded corners only on the right side */
+    border: 1px solid #ccc; /* Consistent border styling */
+    border-left: none; /* Remove border between button and input */
+    background-color: #0078D7; /* Background color for the button */
+    color: white; /* Text color for the button */
+    font-size: 14px; /* Font size for consistency */
+    cursor: pointer; /* Cursor indicates button */
+}
+
+.image-button.span {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+    justify-content: space-between; /* Spreads out the text and the image */
+    text-align: center; /* Centers text within the space it occupies */
+    width: 100%; /* Full width of its parent container */
+    padding: 10px; /* Padding for aesthetic spacing inside the button */
+    position: relative; /* Allows absolute positioning of elements inside */
+}
+
+.image-button.inline {
+    padding: 5px; /* Reduced padding for a more compact button */
+    margin: 0; /* Removes any default margin */
+    height: 30px; /* Smaller height for a compact look */
+    width: 30px; /* Smaller width to match the height */
+}
+
+.image-button img {
+    width: 20px; /* Set image width */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.image-button.span img {
+    position: absolute; /* Absolutely positions the image */
+    right: 5px; /* Distance from the right edge */
+    height: auto; /* Maintains aspect ratio */
+    width: 20px; /* Fixed width for the image */
+}
+
+.delete-button {
+    padding: 5px;
+    margin: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+}
+
+.delete-button:hover {
+    background-color: red;
+    color: white;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #f0f0f0; /* Light grey background for list items */
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+    cursor: pointer;
+}
+
+li:hover {
+    background-color: #e0e0e0; /* Slightly darker shade on hover */
+}
+
+input[type="text"] {
+    width: calc(100% - 22px); /* Full width input fields */
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
