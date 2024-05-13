@@ -18,6 +18,25 @@
     border-radius: 8px; 
 }
 
+.header-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%; 
+}
+
+#detailsHeader {
+    text-align: left; 
+}
+
+.progress {
+    text-align: right;
+    font-size: 14px;
+    height: auto;
+    color: red;
+}
+
+
 h1, h2 {
     color: #333; 
 }

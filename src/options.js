@@ -1,12 +1,12 @@
 let currentHostname = '';
 let currentPackage = null; // Store the current package for modifications
-let validHostNames = ['www.tiktok.com', 'www.instagram.com', 'www.facebook.com', 'www.twitter.com', 'www.youtube.com'];
+let validHostNames = ['tiktok.com', 'instagram.com', 'facebook.com', 'twitter.com', 'youtube.com'];
 
 chrome.tabs.query({active: true, currentWindow: true}, tabs => {
     const url = new URL(tabs[0].url);
-    currentHostname = url.hostname;
-    const domain = new URL(tabs[0].url).hostname;
-    document.getElementById('currentSite').textContent = domain.charAt(0).toUpperCase() + domain.slice(1);
+    currentHostname = url.hostname.replace(/^www\./, '');
+    const siteName = url.hostname.replace(/^www\./, '').replace(/\.\w+$/, '');
+    document.getElementById('currentSite').textContent = siteName.charAt(0).toUpperCase() + siteName.slice(1);
 
 
     const blockButton = document.getElementById('blockUsersButton');
@@ -25,9 +25,16 @@ function loadPackages() {
         const listElement = document.getElementById('packagesList');
         listElement.innerHTML = ''; // Clear the current list completely
 
-        // Style each list element to remove the default bullet points
-        // ensure the package name and delete button are side by side
-        packages.forEach(function(pkg) {
+        let numBlocked = 0;
+        let numTotal = 0;
+
+        // Filter packages based on the current hostname if it's in validHostNames
+        const filteredPackages = validHostNames.includes(currentHostname) ?
+                                 packages.filter(pkg => pkg.site === currentHostname) :
+                                 packages;
+
+        // Iterate over each filtered package and each user within that package
+        filteredPackages.forEach(function(pkg) {
             const entry = document.createElement('li');
             entry.textContent = pkg.name;
             entry.onclick = () => showPackageDetails(pkg);
@@ -38,7 +45,7 @@ function loadPackages() {
             deleteButton.style.backgroundPosition = 'center'; // Center the image in the button
             deleteButton.style.backgroundSize = 'cover'; // Ensure the image covers the button area
             deleteButton.style.width = '20px'; // Set width of the button
-            deleteButton.style.height = '20px'; // Set height of the but
+            deleteButton.style.height = '20px'; // Set height of the button
             deleteButton.style.padding = '5px'; // Remove padding
             deleteButton.onclick = function(event) {
                 event.stopPropagation();
@@ -46,10 +53,25 @@ function loadPackages() {
             };
             entry.appendChild(deleteButton);
             listElement.appendChild(entry);
+
+            // Update counters for each user in the package
+            pkg.users.forEach(user => {
+                numTotal++;
+                if (user.status === "blocked") {
+                    numBlocked++;
+                }
+            });
         });
-        console.log("Packages loaded:", packages);
+
+        // Update the progress element on the main page
+        const progressElement = document.getElementById('main-progress');
+        progressElement.textContent = `${numBlocked} / ${numTotal}`;
+        progressElement.style.color = numBlocked === numTotal ? 'green' : 'red';
+
+        console.log("Packages loaded:", filteredPackages);
     });
 }
+
 
 
 function showPackageDetails(pkg) {
@@ -60,6 +82,13 @@ function showPackageDetails(pkg) {
             document.getElementById('packageName').value = updatedPackage.name;
             document.getElementById('packageSite').value = updatedPackage.site;
             updateUserList();
+
+            // Count the blocked users
+            const blockedUsersCount = updatedPackage.users.filter(user => user.status === 'blocked').length;
+            const totalUsersCount = updatedPackage.users.length;
+            const progressElement = document.getElementById('details-progress');
+            progressElement.textContent = `${blockedUsersCount} / ${totalUsersCount}`;
+            progressElement.style.color = blockedUsersCount === totalUsersCount ? 'green' : 'red';
 
             document.getElementById('mainPage').style.display = 'none';
             document.getElementById('packageDetails').style.display = 'block';
@@ -88,6 +117,7 @@ function updateUserList() {
         // Status label to display user's status
         const statusLabel = document.createElement('span');
         statusLabel.textContent = ` (${user.status})`;
+        statusLabel.style.color = user.status === 'blocked' ? 'green' : 'red'; // Set color based on status
         userEntry.appendChild(statusLabel);
 
         // Delete button setup
@@ -165,7 +195,8 @@ document.getElementById('addUserButton').addEventListener('click', addUser);
 document.getElementById('saveButton').addEventListener('click', function() {
     // Read the input values directly
     const packageName = document.getElementById('packageName').value.trim();
-    const packageSite = document.getElementById('packageSite').value.trim();
+    const packageSite = document.getElementById('packageSite').value.trim().replace(/^www\./, '');
+    document.getElementById('packageSite').value = packageSite;
 
     // Update the currentPackage object
     if (currentPackage) {
@@ -237,6 +268,10 @@ document.getElementById('createPackageButton').addEventListener('click', functio
     document.getElementById('packageName').value = '';
     document.getElementById('packageSite').value = '';
     updateUserList();
+
+    const progressElement = document.getElementById('details-progress');
+    progressElement.textContent = '...';
+    progressElement.style.color = 'red';
 
     document.getElementById('mainPage').style.display = 'none';
     document.getElementById('packageDetails').style.display = 'block';

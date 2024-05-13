@@ -9,7 +9,10 @@
     <div class="wrapper">
         <div id="mainPage">
             <h1 id="mainHeader">Block users on:</h1>
-            <h2 id="currentSite">Loading...</h2>
+            <div class="header-container">
+                <h2 id="currentSite">Loading...</h2>
+                <p class="progress" id="main-progress">...</p>
+            </div>
             <button id="blockUsersButton">Start Blocking...</button>
             <div class="button-container">
                 <h2>Active Blocklists:</h2>
@@ -40,7 +43,10 @@
                     </button>
                 </div>
             </div>
-            <h1 id="detailsHeader">Blocklist Details:</h1>
+            <div class="header-container">
+                <h1 id="detailsHeader">Blocklist Details:</h1>
+                <p class="progress" id="details-progress">...</p>
+            </div>
             <input type="text" id="packageName" placeholder="Package Name">
             <input type="text" id="packageSite" placeholder="Site URL">
             <h2>Users:</h2>
