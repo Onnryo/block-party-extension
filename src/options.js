@@ -38,7 +38,7 @@ function initiateBlocking() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         const hostname = new URL(tabs[0].url).hostname.replace(/^www\./, '');
         chrome.storage.local.get({ userPackages: [] }, function({ userPackages }) {
-            const packageToBlock = userPackages.find(pkg => pkg.site === hostname && pkg.users.some(user => user.status === 'not blocked'));
+            const packageToBlock = userPackages.find(pkg => pkg.site === hostname && pkg.users.some(user => user.status === 'not blocked' || user.status === 'error'));
             if (packageToBlock) {
                 chrome.runtime.sendMessage({ action: "startBlocking", packageData: packageToBlock });
             } else {

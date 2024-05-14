@@ -19,7 +19,7 @@ Block Party currently supports:
 - [x] TikTok
 - [ ] Instagram
 - [ ] Facebook
-- [ ] Twitter
+- [x] Twitter
 - [ ] YouTube
 
 

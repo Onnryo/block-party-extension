@@ -3,11 +3,11 @@
   "name": "Block Party Extension",
   "version": "1.0",
   "content_scripts": [
-      {
-          "matches": ["https://www.tiktok.com/*"],
-          "js": ["blockUser.js"],
-          "run_at": "document_end"
-      }
+    {
+      "matches": ["https://www.tiktok.com/*", "https://tiktok.com/*", "https://www.twitter.com/*", "https://twitter.com/*"],
+      "js": ["blockUser.js"],
+      "run_at": "document_end"
+    }
   ],
   "permissions": [
     "storage",
@@ -15,7 +15,10 @@
     "scripting"
   ],
   "host_permissions": [
-    "https://www.tiktok.com/*"
+    "https://www.tiktok.com/*",
+    "https://tiktok.com/*",
+    "https://www.twitter.com/*",
+    "https://twitter.com/*"
   ],
   "background": {
     "service_worker": "background.js"

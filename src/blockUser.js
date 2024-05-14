@@ -46,7 +46,8 @@ function simulateMouseEvent(element, eventType) {
     const mouseEvent = new MouseEvent(eventType, {
         view: window,
         bubbles: true,
-        cancelable: true
+        cancelable: true,
+        buttons: 1
     });
     element.dispatchEvent(mouseEvent);
 }
@@ -115,9 +116,44 @@ function tryBlockTikTokUser(username) {
 }
 
 function tryBlockTwitterUser(username) {
-    return new Promise((resolve, reject) => {
-        // TODO: Implement Twitter blocking logic here
-        reject(new Error('Twitter blocking not yet supported.'));
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Check for the unblock button first
+            const unblockButton = await waitForElementWithTimeout('button[data-testid*="unblock"]');
+            if (unblockButton) {
+                console.log('User is already blocked.');
+                return resolve('User is already blocked.');
+            }
+
+            // Proceed to find the ellipses button if the unblock button is not found
+            const ellipsesButton = await waitForElementWithTimeout('button[data-testid="userActions"]', 2000);
+            if (!ellipsesButton) {
+                return reject(new Error('User could not be loaded.'));
+            }
+
+            ellipsesButton.scrollIntoView();
+            simulateMouseEvent(ellipsesButton, 'mouseover');
+            simulateMouseEvent(ellipsesButton, 'mousedown');
+            simulateMouseEvent(ellipsesButton, 'mouseup');
+            simulateMouseEvent(ellipsesButton, 'click');
+
+            // Check if the "Block" button is available
+            const blockButton = await waitForElementWithTimeout('div[data-testid="block"]', 2000);
+            if (blockButton) {
+                blockButton.click();
+                const confirmButton = await waitForElementWithTimeout('button[data-testid="confirmationSheetConfirm"]', 2000);
+                if (confirmButton) {
+                    confirmButton.click();
+                    return resolve('User has been confirmed blocked.');
+                } else {
+                    return reject(new Error('Could not find confirmation button.'));
+                }
+            } else {
+                return reject(new Error('Block button not found.'));
+            }
+        } catch (error) {
+            return reject(error);
+        }
     });
 }
 
