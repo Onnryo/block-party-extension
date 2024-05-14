@@ -38,10 +38,25 @@ function blockUsersSequentially(packageData) {
     }
 
     return new Promise((resolve, reject) => {
-        chrome.tabs.create({ url: `https://${packageData.site}/@${userToBlock.username}` }, tab => {
+        let userUrl = `https://${packageData.site}/`;
+        if (packageData.site === 'tiktok.com') {
+            userUrl += `@${userToBlock.username}`;
+        } else if (packageData.site === 'twitter.com') {
+            userUrl += userToBlock.username;
+        } else if (packageData.site === 'instagram.com') {
+            userUrl += userToBlock.username;
+        } else if (packageData.site === 'facebook.com') {
+            userUrl += userToBlock.username;
+        } else if (packageData.site === 'youtube.com') {
+            userUrl += `@${userToBlock.username}`;
+        } else {
+            reject(new Error('Unsupported site.'));
+        }
+
+        chrome.tabs.create({ url: userUrl }, tab => {
             chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
                 if (tabId === tab.id && changeInfo.status === 'complete') {
-                    chrome.tabs.sendMessage(tab.id, { type: 'BLOCK_USER', username: userToBlock.username }, response => {
+                    chrome.tabs.sendMessage(tab.id, { type: 'BLOCK_USER', username: userToBlock.username, site: packageData.site }, response => {
                         chrome.tabs.remove(tab.id);
                         if (response.status === 'completed') {
                             userToBlock.status = 'blocked';

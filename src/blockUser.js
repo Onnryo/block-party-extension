@@ -1,13 +1,44 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'BLOCK_USER') {
-        openEllipsesMenuAndBlock().then(() => {
-            console.log('Blocking process completed');
-            sendResponse({status: 'completed'});
-        }).catch(error => {
-            console.error('Blocking process failed:', error);
-            sendResponse({status: 'failed', error: error});
-        });
-        return true; // Keeps the message channel open for the response
+        try {
+            if (message.site === 'tiktok.com') {
+                tryBlockTikTokUser(message.username).then(() => {
+                    sendResponse({ status: 'completed' });
+                }).catch(error => {
+                    sendResponse({ status: 'failed', error: error.message });
+                });
+            } else if (message.site === 'twitter.com') {
+                tryBlockTwitterUser(message.username).then(() => {
+                    sendResponse({ status: 'completed' });
+                }).catch(error => {
+                    sendResponse({ status: 'failed', error: error.message });
+                });
+            } else if (message.site === 'instagram.com') {
+                tryBlockInstagramUser(message.username).then(() => {
+                    sendResponse({ status: 'completed' });
+                }).catch(error => {
+                    sendResponse({ status: 'failed', error: error.message });
+                });
+            } else if (message.site === 'facebook.com') {
+                tryBlockFacebookUser(message.username).then(() => {
+                    sendResponse({ status: 'completed' });
+                }).catch(error => {
+                    sendResponse({ status: 'failed', error: error.message });
+                });
+            } else if (message.site === 'youtube.com') {
+                tryBlockYouTubeUser(message.username).then(() => {
+                    sendResponse({ status: 'completed' });
+                }).catch(error => {
+                    sendResponse({ status: 'failed', error: error.message });
+                });
+            } else {
+                sendResponse({ status: 'failed', error: 'Site not supported.' });
+            }
+            return true; // Keeps the message channel open for the response
+        } catch (error) {
+            console.error('Failed to block user:', error);
+            sendResponse({ status: 'failed', error: error.message });
+        }
     }
 });
 
@@ -44,8 +75,7 @@ function waitForElementWithTimeout(selector, timeoutMs) {
     });
 }
 
-
-function openEllipsesMenuAndBlock() {
+function tryBlockTikTokUser(username) {
     return new Promise(async (resolve, reject) => {
         try {
             const ellipsesButton = await waitForElementWithTimeout('div[data-e2e="user-more"]', 2000);
@@ -81,5 +111,33 @@ function openEllipsesMenuAndBlock() {
         } catch (error) {
             reject(error);
         }
+    });
+}
+
+function tryBlockTwitterUser(username) {
+    return new Promise((resolve, reject) => {
+        // TODO: Implement Twitter blocking logic here
+        reject(new Error('Twitter blocking not yet supported.'));
+    });
+}
+
+function tryBlockInstagramUser(username) {
+    return new Promise((resolve, reject) => {
+        // TODO: Implement Instagram blocking logic here
+        reject(new Error('Instagram blocking not yet supported.'));
+    });
+}
+
+function tryBlockFacebookUser(username) {
+    return new Promise((resolve, reject) => {
+        // TODO: Implement Facebook blocking logic here
+        reject(new Error('Facebook blocking not yet supported.'));
+    });
+}
+
+function tryBlockYouTubeUser(username) {
+    return new Promise((resolve, reject) => {
+        // TODO: Implement YouTube blocking logic here
+        reject(new Error('YouTube blocking not yet supported.'));
     });
 }
