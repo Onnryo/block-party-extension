@@ -29,9 +29,13 @@ function handleMessage(message, sender, sendResponse) {
     }
 }
 
+function getRandomDelay(min = 1000, max = 3000) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // Core Functionality
 function blockUsersSequentially(packageData) {
-    const userToBlock = packageData.users.find(user => user.status === 'not blocked');
+    const userToBlock = packageData.users.find(user => user.status === 'not blocked' || user.status === 'error');
     if (!userToBlock) {
         triggerNextPackageBlocking(packageData.site);
         return;
@@ -57,14 +61,26 @@ function blockUsersSequentially(packageData) {
             chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
                 if (tabId === tab.id && changeInfo.status === 'complete') {
                     chrome.tabs.sendMessage(tab.id, { type: 'BLOCK_USER', username: userToBlock.username, site: packageData.site }, response => {
-                        chrome.tabs.remove(tab.id);
+                        if (chrome.runtime.lastError) {
+                            console.error('Error sending message:', chrome.runtime.lastError.message);
+                            chrome.tabs.remove(tab.id);
+                            return reject(new Error(chrome.runtime.lastError.message));
+                        }
+                        if (!response) {
+                            console.log('No response received');
+                            chrome.tabs.remove(tab.id);
+                            return reject(new Error('No response received'));
+                        }
+                        console.log('Response received:', response);
                         if (response.status === 'completed') {
                             userToBlock.status = 'blocked';
-                            resolve();
                         } else {
                             userToBlock.status = 'error';
-                            reject(new Error(response.error));
                         }
+                        setTimeout(() => {
+                            chrome.tabs.remove(tab.id);
+                            resolve();
+                        }, getRandomDelay()); // Wait for a random length of time before closing the tab
                     });
                     chrome.tabs.onUpdated.removeListener(listener);
                 }

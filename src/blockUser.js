@@ -119,7 +119,7 @@ function tryBlockTwitterUser(username) {
     return new Promise(async (resolve, reject) => {
         try {
             // Check for the unblock button first
-            const unblockButton = await waitForElementWithTimeout('button[data-testid*="unblock"]');
+            const unblockButton = await waitForElementWithTimeout('button[data-testid*="unblock"]', 1000);
             if (unblockButton) {
                 console.log('User is already blocked.');
                 return resolve('User is already blocked.');
